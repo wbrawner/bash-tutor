@@ -3,9 +3,14 @@
 # First, we'll define some paths to programs that we'll need. This is good
 # practice for security and it also arguably keeps the script clean
 
+CP=/usr/bin/cp
 ECHO="echo -e"
 LS="/usr/bin/ls --color=auto"
+MKDIR=/usr/bin/mkdir
+MV=/usr/bin/mv
+RM=/usr/bin/rm
 SLEEP=/usr/bin/sleep
+TOUCH=/usr/bin/touch
 
 # Next, we'll simplify the mini-quizzes by wrapping them in a function. The 
 # idea behind this is to provide a safe environment for the learner to run 
@@ -13,6 +18,7 @@ SLEEP=/usr/bin/sleep
 
 function test_command
 {
+    # Usage: test_command <hint> <command to run>
     while true; do
         read -p "$TUTOR_PROMPT" command
         case $command in
@@ -24,6 +30,7 @@ function test_command
 
 function save_progress
 {
+    # Usage: save_progress <user> <tutor prompt> <progress>
     cat <<EOF > ~/.bash_tutor_progress
 USER=$1
 TUTOR_PROMPT="$2"
@@ -108,21 +115,17 @@ information on each of the files and directories. Try it now:\n";
 
             $SLEEP 2;
 
-            save_progress $USER "$TUTOR_PROMPT" "1.2";
-
-            ;&
-
-        "1.2")
             $ECHO "\nDon't worry about what all of this means right now. We'll \
 cover it later. For now, you can practice some other flags. A good one to \
 remember is the --help flag, which usually provides you with a list of \
-options you can use. This is sometimes shortened to just -h. For now though, \
-let's talk about arguments.";
+options you can use. This is sometimes shortened to just -h. Try it now.";
+
+            test_command "ls -h" "$LS -h";
 
             $SLEEP 2;
 
             $ECHO "Arguments are additional pieces of information that you can give to a \
-command that usually changes the location of where the command is run. For \
+command that usually change the location of where the command is run. For \
 example, running the 'ls' command as we did before lists the contents of the \
 current directory we are in. If you supply ls with a file or folder on the \
 system though, it will print out that file's name or that folder's contents. \
@@ -130,11 +133,8 @@ Try running 'ls' on the '/' directory.\n";
 
             test_command "ls /" "$LS /";
 
-            save_progress $USER "$TUTOR_PROMPT" "1.3";
+            $SLEEP 2;
 
-            ;&
-
-        "1.3")
             $ECHO "\nWhat you're looking at is the root directory of your \
 system. This is basically what holds all of the files and folders that run \
 the Linux operating system. We'll go over what each folder is for in a later \
@@ -142,33 +142,61 @@ lesson.";
 
             $SLEEP 2;
 
-            $ECHO "Being able to look at these different folder contents is nice, but \
-sometimes you may need to be able to move around into different folders \
-for easier access to your files. To do this, you use the 'cd' command. Try 
-running it now, without any options or arguments.\n";
-
-            $SLEEP 2;
-
-            test_command "cd" "cd";
-
-            $ECHO $TUTOR_PROMPT;
-
-            save_progress $USER "$TUTOR_PROMPT" "1.4";
+            save_progress $USER "$TUTOR_PROMPT" "1.2";
 
             ;&
 
-        "1.4")
-            $SLEEP 2;
+        "1.2")
+            $ECHO "Being able to look at different folder contents is nice, but \
+sometimes you may need to be able to move around into different folders \
+for easier access to your files. To do this, you use the 'cd' command. Try 
+running it now, and change to the /etc directory.\n";
 
-            $ECHO "\nThe 'cd' command, without any arguments, brings you back to \
-your home directory. Since you were already there, nothing really happened. \
-Try running 'cd' on the /etc directory to see what happens then.\n";
+            $SLEEP 2;
 
             test_command "cd /etc" "cd /etc";
 
             TUTOR_PROMPT="$USER@bash-tutor /etc \$ ";
 
             $ECHO $TUTOR_PROMPT;
+
+            $SLEEP
+
+            $ECHO "\nThe 'cd' command, without any arguments, brings you back to \
+your home directory. Try it now.\n";
+
+            test_command "cd" "cd";
+
+            TUTOR_PROMPT="$USER@bash-tutor ~ \$ ";
+
+            $ECHO $TUTOR_PROMPT;
+
+            $SLEEP 2; 
+
+            save_progress $USER "$TUTOR_PROMPT" "1.3";
+
+            ;&
+
+        "1.3")
+            $ECHO "\nWhen you move around a lot, you may forget where you are. \
+Luckily, there's a command for situations just like that. 'pwd' is what \
+you'll be looking for. You can remember it as 'print working directory', if \
+that helps. Try running it now.\n";
+
+            test_command "pwd" "pwd";
+
+            $SLEEP 2; 
+
+            save_progress $USER "$TUTOR_PROMPT" "1.4";
+
+            ;&
+
+        "1.4")
+            $ECHO "\nNow we'll get into creating files and directories. We'll \
+start with the 'touch' command. The 'touch' command allows you to create an \
+empty file. Try using it now to create a file called 'file1.txt' now.\n";
+
+            test_command "touch file1.txt" "$TOUCH file1.txt";
 
             $SLEEP 2; 
 
@@ -177,6 +205,80 @@ Try running 'cd' on the /etc directory to see what happens then.\n";
             ;&
 
         "1.5")
+            $ECHO "\nOnce you've created a file, it's also helpful to be able \
+to copy it. To do this, you use the 'cp' command. 'cp' takes two arguments by \
+default, first the original file, and then the new copy. Try copying \
+'file1.txt' to a new file named 'file2.txt'.\n";
+
+            test_command "cp file1.txt file2.txt" "$CP file1.txt file2.txt";
+
+            $SLEEP 2; 
+
+            save_progress $USER "$TUTOR_PROMPT" "1.6";
+
+            ;&
+
+        "1.6")
+            $ECHO "\nDirectories can be created with the 'mkdir' command. Try \
+creating a directory called 'test' now.\n";
+
+            test_command "mkdir test" "$MKDIR test";
+
+            $SLEEP 2; 
+
+            save_progress $USER "$TUTOR_PROMPT" "1.7";
+
+            ;&
+
+        "1.7")
+            $ECHO "\nYou can also move files around from the command line. \
+To do this, you use the 'mv' command. Try moving 'file1.txt' into the 'test/' \
+directory. Directories are usually appended with a '/'.\n";
+
+            test_command "mv file1.txt test/" "$MV file1.txt test/";
+
+            $SLEEP 2; 
+
+            $ECHO "\n'mv' is also useful for renaming files from the command \
+line. This also takes two arguments, in the same way that 'cp' does. Try \
+renaming 'file2.txt' to 'file3.txt' now.\n"
+
+            test_command "mv file2.txt file3.txt" "$MV file2.txt file3.txt";
+
+            $SLEEP 2; 
+
+            save_progress $USER "$TUTOR_PROMPT" "1.8";
+
+            ;&
+
+        "1.8")
+            $ECHO "\nLet's not leave all of these test files lying around. \
+To delete files from the command line, you use the 'rm' command. Be very \
+careful with this though, because once a file is deleted from the command \
+line, it's gone forever. At the very least it is very expensive to recover. \
+For this tutorial though, you're safe. Go ahead and delete 'file3.txt' now.\n";
+
+            test_command "rm file3.txt" "$RM file3.txt";
+
+            $SLEEP 2; 
+
+            $ECHO "\nDeleting directories requires the '-r' option. I usually \
+like to add the '-f' flag with this as well, because otherwise 'rm' will ask \
+you to confirm each file deletion. When you pass multiple options in the same \
+command, you can put them together with the same hyphen. Try running 'rm with \
+both the 'r' and 'f' flags on the test directory..\n";
+
+            test_command "rm -rf test" "$RM -rf test";
+
+            $SLEEP 2; 
+
+            save_progress $USER "$TUTOR_PROMPT" "2.0";
+
+            ;&
+
+        "2.0")
+            $ECHO "\nCongrats on completing the first part of the tutorial!\n"
+
             $ECHO "\nYou've reached the end of the tutorial, for now. Check \
 back on either the GitHub page for this project, or my personal blog at \
 https://wbrawner.com/blog, where I will also be posting updates, to see if \
