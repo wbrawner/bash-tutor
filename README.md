@@ -24,25 +24,29 @@ Roadmap
     - running commands, using flags & arguments
   * Commands:
     - ~~ls~~
-    - cd
-    - mv
-    - cp
-    - rm
-    - touch
-    - mkdir
-    - pwd
+    - ~~cd
+    - ~~mv~~
+    - ~~cp~~
+    - ~~rm~~
+    - ~~touch~~
+    - ~~mkdir~~
+    - ~~pwd~~
 
 ### v2.0 Reading and editing files
   * Concepts:
     - pipes
     - directing output (overwrite vs append)
   * Commands
-    - vim
-    - vimtutor
+    - vim/vimtutor
+    - nano
+    - echo
     - cat
     - tail
     - head
     - echo
+    - sort
+    - more
+    - less
 
 ### v3.0 User and group management
   * Concepts:

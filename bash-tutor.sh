@@ -47,8 +47,6 @@ ______   __      ___  _   _   ______  _   _  ______  _____ ______
 |_____/|_| |_| |____/|_| |_|   |_|   \\_____/  |_|   \\_____/|_| |_|  
 
 Welcome to the interactive bash tutorial! To exit this tutorial at any \
-time, press Ctrl+C. That is, press and hold the Control Key (Ctrl), and then \
-press the C Key.
 
 EOF
 
